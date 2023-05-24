@@ -19,7 +19,7 @@
 #define FB_BASE 0x1e000000
 
 u32 xenos_id = 0; // 5841=slim, 5831=jasper, 5821=zephyr/falcon?, 5811=xenon?
-int xenos_is_hdmi = 0, xenos_is_corona = 0;
+int xenos_is_hdmi = 0, xenos_is_corona = 0, xenos_is_winchester = 0;
 static struct edid * xenos_edid = NULL;
 
 
@@ -56,6 +56,14 @@ static int isCorona()
 	return 0;
 }
 
+static int isWinchester()
+{
+	int type = xenon_get_console_type();
+	if (type == REV_WINCHESTER)
+		return 1;
+	return 0;
+}
+
 static struct mode_s * xenos_current_mode = NULL;
 
 void xenos_init_ana_new(uint32_t *mode_ana, int hdmi)
@@ -71,7 +79,7 @@ void xenos_init_ana_new(uint32_t *mode_ana, int hdmi)
 
 	xenon_smc_ana_write(0, 0);
 
-	if (xenos_is_corona)
+	if (xenos_is_corona || xenos_is_winchester)
 	{
 		// pll stuff
 		// all reads from the video_mode are 4 byte ints
@@ -590,7 +598,7 @@ void xenos_autoset_mode(void)
 		break;
 	}
 
-	if (xenos_is_corona)
+	if (xenos_is_corona || xenos_is_winchester)
 		xenos_set_mode(&xenos_modes_corona[mode]);
 	else
 		xenos_set_mode(&xenos_modes[mode]);
@@ -602,8 +610,13 @@ void xenos_init(int videoMode)
 	printf("Xenos GPU ID=%04x\n", (unsigned int)xenos_id);
 
 	xenos_is_corona = isCorona();
+	xenos_is_winchester = isWinchester();
 	if (xenos_is_corona)
 		printf("Detected Corona motherboard!\n");
+	
+	if (xenos_is_winchester)
+		printf("Detected Winchester motherboard!\n");
+
 
 	xenos_init_phase0();
 	xenos_init_phase1();
@@ -615,7 +628,7 @@ void xenos_init(int videoMode)
 		xenon_config_init();
 		xenos_autoset_mode();
 	}
-	else if (xenos_is_corona)
+	else if (xenos_is_corona || xenos_is_winchester)
 		xenos_set_mode(&xenos_modes_corona[videoMode]);
 	else
 		xenos_set_mode(&xenos_modes[videoMode]);
