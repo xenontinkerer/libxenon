@@ -562,6 +562,7 @@ void xenos_autoset_mode(void)
 	case 0x1C: // HDMI_AUDIO - GHETTO MOD
 	case 0x1E: // HDMI
 	case 0x1F: // HDMI
+	case 0x5C: // HDMI
 		mode = VIDEO_MODE_HDMI_720P;
 		break;
 	case 0x43: // COMPOSITE - TV MODE
@@ -611,13 +612,6 @@ void xenos_init(int videoMode)
 
 	xenos_is_corona = isCorona();
 	xenos_is_winchester = isWinchester();
-	if (xenos_is_corona)
-		printf("Detected Corona motherboard!\n");
-	
-	if (xenos_is_winchester)
-		printf("Detected Winchester motherboard!\n");
-
-
 	xenos_init_phase0();
 	xenos_init_phase1();
 	
@@ -659,3 +653,4 @@ int xenos_is_initialized()
 {
 	return xenos_current_mode != NULL;
 }
+
