@@ -433,7 +433,7 @@ xenon_atapi_request_sense(struct xenon_ata_device *dev) {
 	xenon_atapi_packet(dev, cdb, 0);
 	xenon_ata_wait_ready(dev);
 	if (xenon_ata_pio_read(dev, buf, sizeof (buf))) {
-		printf("ATAPI request sense failed\n");
+		printf("ATAPI request sense failed!\n");
 		return -1;
 	};
 
@@ -451,7 +451,7 @@ xenon_atapi_inquiry_model(struct xenon_ata_device *dev) {
 	xenon_atapi_packet(dev, cdb, 0);
 	xenon_ata_wait_ready(dev);
 	if (xenon_ata_pio_read(dev, buf, sizeof (buf))) {
-		printf("ATAPI inquiry failed\n");
+		printf("ATAPI inquiry failed!\n");
 		return -1;
 	};
 
@@ -474,7 +474,7 @@ xenon_atapi_set_modeb(void) {
 	xenon_atapi_packet(dev, cdb, 0);
 	xenon_ata_wait_ready(dev);
 	if (xenon_ata_pio_read(dev, buf, sizeof (buf))) {
-		printf("DVD set mode b failed\n");
+		printf("DVD set mode b failed!\n");
 	}
 }
 
@@ -678,7 +678,7 @@ xenon_ata_init1(struct xenon_ata_device *dev, uint32_t ioaddress, uint32_t ioadd
 	xenon_ata_regset(dev, XENON_ATA_REG_LBALOW, 0x5A);
 	xenon_ata_wait();
 	if (xenon_ata_regget(dev, XENON_ATA_REG_LBALOW) != 0x5A) {
-		printf("no ata device connected.\n");
+		printf("Unable to find ATA device\n");
 		return -1;
 	}
 
