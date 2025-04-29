@@ -37,7 +37,7 @@ void network_init()
 #ifdef STATS
 	stats_init();
 #endif /* STATS */
-	printf(" * initializing lwip 1.4.0...\n");
+	printf(" * Initializing lwIP 1.4.0...\n");
 
 	last_tcp=mftb();
 	last_dhcp_fine=mftb();
@@ -58,7 +58,7 @@ void network_init()
 	}
 	netif_set_default(&netif);
 
-	printf(" * requesting dhcp...");
+	printf(" * Requesting DHCP...");
 	//dhcp_set_struct(&netif, &netif_dhcp);
 	dhcp_start(&netif);
 
@@ -76,10 +76,10 @@ void network_init()
 	}
 
 	if (netif.ip_addr.addr) {
-		printf("success\n");
+		printf(" Success!\n");
 	} else {
-		printf("failed\n");
-		printf(" * now assigning a static ip\n");
+		printf(" Failed!\n");
+		printf(" * Static IP address assigned\n");
 
 		IP4_ADDR(&ipaddr, 192, 168, 1, 99);
 		IP4_ADDR(&gateway, 192, 168, 1, 1);
