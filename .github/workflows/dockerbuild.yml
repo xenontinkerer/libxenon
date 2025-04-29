@@ -20,8 +20,8 @@ jobs:
       - name: Log in to GHCR
         uses: docker/login-action@v2
         with:
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}  # GitHub automatically provides this token
+          username: xenontinkerer
+          password: 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  # GitHub automatically provides this token
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v2
